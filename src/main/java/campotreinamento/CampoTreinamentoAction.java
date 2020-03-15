@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import util.Pessoa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CampoTreinamentoAction {
@@ -28,34 +29,38 @@ public class CampoTreinamentoAction {
     }
 
     public boolean selecionaRadioButton(String sexo){
+        boolean selecionou=false;
         if (sexo.equalsIgnoreCase("Masculino")){
             campoTreinamentoPage.getRadioBtnMasculino().click();
-            return campoTreinamentoPage.getRadioBtnMasculino().isSelected();
+            selecionou = campoTreinamentoPage.getRadioBtnMasculino().isSelected();
         }
-        else if (sexo.equalsIgnoreCase("Feminino")){
+        if (sexo.equalsIgnoreCase("Feminino")){
             campoTreinamentoPage.getRadioBtnFeminino().click();
-            return campoTreinamentoPage.getRadioBtnFeminino().isSelected();
-        }else throw new IllegalArgumentException();
+            selecionou = campoTreinamentoPage.getRadioBtnFeminino().isSelected();
+        }
+        return selecionou;
     }
-    public boolean selecionaCheckComida(String comida){
-        WebElement elementoComida = null;
-        if (comida.equalsIgnoreCase("carne")){
-            campoTreinamentoPage.getCheckCarne().click();
-            elementoComida = campoTreinamentoPage.getCheckCarne();
+    public boolean selecionaCheckComida(String... comidas){
+        List<WebElement> elementosComida = new ArrayList<>();
+        for (String comida: comidas) {
+            if (comida.equalsIgnoreCase("carne")){
+                campoTreinamentoPage.getCheckCarne().click();
+                elementosComida.add(campoTreinamentoPage.getCheckCarne());
+            }
+            else if(comida.equalsIgnoreCase("frango")){
+                campoTreinamentoPage.getCheckFrango().click();
+                elementosComida.add(campoTreinamentoPage.getCheckFrango());
+            }
+            else if (comida.equalsIgnoreCase("pizza")){
+                campoTreinamentoPage.getCheckPizza().click();
+                elementosComida.add(campoTreinamentoPage.getCheckPizza());
+            }
+            else if (comida.equalsIgnoreCase("vegetariano")){
+                campoTreinamentoPage.getCheckVegetariano().click();
+                elementosComida.add(campoTreinamentoPage.getCheckVegetariano());
+            }
         }
-        else if(comida.equalsIgnoreCase("frango")){
-            campoTreinamentoPage.getCheckFrango().click();
-            elementoComida = campoTreinamentoPage.getCheckFrango();
-        }
-        else if (comida.equalsIgnoreCase("pizza")){
-            campoTreinamentoPage.getCheckPizza().click();
-            elementoComida = campoTreinamentoPage.getCheckPizza();
-        }
-        else if (comida.equalsIgnoreCase("vegetariano")){
-            campoTreinamentoPage.getCheckVegetariano().click();
-            elementoComida = campoTreinamentoPage.getCheckVegetariano();
-        }
-        return verificaSeElementoEstaSelecionado(elementoComida);
+        return verificaSeTodosElementosEstaoSelecionados(elementosComida);
     }
 
     public String selecionarEscolaridadeDropDown(String escolaridade){
@@ -170,6 +175,18 @@ public class CampoTreinamentoAction {
 
     public boolean verificaSeElementoEstaSelecionado(WebElement elemento){
         return elemento.isDisplayed();
+    }
+
+    public boolean verificaSeTodosElementosEstaoSelecionados(List<WebElement> elementos){
+        boolean verificacao = true;
+        for (WebElement el: elementos) {
+            if (!el.isDisplayed()) {
+                verificacao = false;
+                System.out.println("Verificação falhou para o elemento: "+ el.getText() + "deveria estar selecionado, mas não está :(");
+                break;
+            }
+        }
+        return verificacao;
     }
     public String pegaTextoElementoPorId(String id){
         return campoTreinamentoPage.getDriver().findElement(By.id(id)).getText();

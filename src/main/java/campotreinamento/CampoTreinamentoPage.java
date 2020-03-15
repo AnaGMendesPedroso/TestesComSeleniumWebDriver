@@ -80,6 +80,7 @@ public class CampoTreinamentoPage {
     @Getter
     @FindBy(id = "frame1")
     private WebElement frame;
+
     @Getter
     private WebDriver driver;
 

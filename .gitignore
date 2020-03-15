@@ -1,1 +1,7 @@
 /target/
+/.idea/
+/.settings/
+/.classpath
+/.factorypath
+/.project
+/CursoSelenium.iml
