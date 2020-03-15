@@ -7,10 +7,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import util.Pessoa;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class TesteCampoTreinamento {
 
@@ -48,6 +46,7 @@ public class TesteCampoTreinamento {
 
     @Test
     public void testCheckBoxPizza(){
+        campoTreinamentoAction.selecionaCheckComida("pizza");
         Assert.assertTrue(campoTreinamentoAction.selecionaCheckComida("pizza"));
     }
 
@@ -92,22 +91,15 @@ public class TesteCampoTreinamento {
 
     @Test
     public void testSelecionaComboMulti(){
-        List esportes = new ArrayList<String>();
-        esportes.add("Futebol");
-        esportes.add("Karate");
-        int qtdElementosCombo = campoTreinamentoAction.selecionaEsportes(esportes);
+        int qtdElementosCombo = campoTreinamentoAction.selecionaEsportes("Futebol","Karate");
         Assert.assertTrue(qtdElementosCombo==2);
     }
 
     @Test
     public void testDeselecionaComboMulti(){
-        List esportes = new ArrayList<String>();
-        esportes.add("Futebol");
-        esportes.add("Karate");
-        int qtdElementosCombo = campoTreinamentoAction.selecionaEsportes(esportes);
-        esportes.remove("Futebol");
-        qtdElementosCombo = campoTreinamentoAction.deselecionaEsportes(esportes);
-        Assert.assertTrue(qtdElementosCombo==1);
+        campoTreinamentoAction.selecionaEsportes("Futebol","Karate","Corrida");
+        int qtdElementosCombo = campoTreinamentoAction.deselecionaEsportes("Futebol");
+        Assert.assertTrue(qtdElementosCombo==2);
     }
 
     @Test
@@ -169,9 +161,10 @@ public class TesteCampoTreinamento {
 
     @Test
     public void desafioCasdastroComSucesso(){
-        LinkedList esportes = new LinkedList<String>();
+        LinkedList<String> esportes = new LinkedList<String>();
         esportes.add("Karate");
-        LinkedList comidas = new LinkedList<String>();
+        esportes.add("Corrida");
+        LinkedList<String> comidas = new LinkedList<String>();
         comidas.add("Carne");
         comidas.add("Pizza");
         Pessoa godofredo = new Pessoa("Godofredo","Feliciano","Masculino",comidas,"superior",esportes);
@@ -252,10 +245,7 @@ public class TesteCampoTreinamento {
         campoTreinamentoAction.preencheTextFieldSobrenome("ALB");
         campoTreinamentoAction.selecionaRadioButton("Masculino");
         campoTreinamentoAction.selecionaCheckComida("carne");
-        ArrayList esportes = new ArrayList();
-        esportes.add("Corrida");
-        esportes.add("O que eh esporte?");
-        campoTreinamentoAction.selecionaEsportes(esportes);
+        campoTreinamentoAction.selecionaEsportes("Corrida","O que eh esporte?");
         campoTreinamentoAction.clicaBtnCadastrar();
         Assert.assertEquals(campoTreinamentoAction.mudarParaAlertaPegarTexto(),"Voce faz esporte ou nao?");
     }

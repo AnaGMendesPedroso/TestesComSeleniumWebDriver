@@ -17,44 +17,45 @@ public class CampoTreinamentoAction {
         this.campoTreinamentoPage = new CampoTreinamentoPage(driver);
     }
 
-    public String preencheTextFieldNome(String texto){
-        campoTreinamentoPage.getTextFieldNome().sendKeys(texto);
+    public String preencheTextFieldNome(String nome){
+        campoTreinamentoPage.getTextFieldNome().sendKeys(nome);
         return campoTreinamentoPage.getTextFieldNome().getAttribute("value");
     }
 
-    public String preencheTextFieldSobrenome(String texto){
-        campoTreinamentoPage.getTextFieldSobrenome().sendKeys(texto);
+    public String preencheTextFieldSobrenome(String sobrenome){
+        campoTreinamentoPage.getTextFieldSobrenome().sendKeys(sobrenome);
         return campoTreinamentoPage.getTextFieldNome().getAttribute("value");
     }
 
-    public boolean selecionaRadioButton(String opcao){
-        if (opcao.equalsIgnoreCase("Masculino")){
+    public boolean selecionaRadioButton(String sexo){
+        if (sexo.equalsIgnoreCase("Masculino")){
             campoTreinamentoPage.getRadioBtnMasculino().click();
             return campoTreinamentoPage.getRadioBtnMasculino().isSelected();
         }
-        else if (opcao.equalsIgnoreCase("Feminino")){
+        else if (sexo.equalsIgnoreCase("Feminino")){
             campoTreinamentoPage.getRadioBtnFeminino().click();
             return campoTreinamentoPage.getRadioBtnFeminino().isSelected();
         }else throw new IllegalArgumentException();
     }
     public boolean selecionaCheckComida(String comida){
+        WebElement elementoComida = null;
         if (comida.equalsIgnoreCase("carne")){
             campoTreinamentoPage.getCheckCarne().click();
-            return campoTreinamentoPage.getCheckCarne().isSelected();
+            elementoComida = campoTreinamentoPage.getCheckCarne();
         }
         else if(comida.equalsIgnoreCase("frango")){
             campoTreinamentoPage.getCheckFrango().click();
-            return campoTreinamentoPage.getCheckFrango().isSelected();
+            elementoComida = campoTreinamentoPage.getCheckFrango();
         }
         else if (comida.equalsIgnoreCase("pizza")){
             campoTreinamentoPage.getCheckPizza().click();
-            return campoTreinamentoPage.getCheckPizza().isSelected();
+            elementoComida = campoTreinamentoPage.getCheckPizza();
         }
         else if (comida.equalsIgnoreCase("vegetariano")){
             campoTreinamentoPage.getCheckVegetariano().click();
-            return campoTreinamentoPage.getCheckVegetariano().isSelected();
+            elementoComida = campoTreinamentoPage.getCheckVegetariano();
         }
-        else throw new IllegalArgumentException();
+        return verificaSeElementoEstaSelecionado(elementoComida);
     }
 
     public String selecionarEscolaridadeDropDown(String escolaridade){
@@ -70,17 +71,17 @@ public class CampoTreinamentoAction {
         return result.getAttribute("value");
     }
 
-    public int selecionaEsportes(List<String> listaEsportes){
+    public int selecionaEsportes(String... esportes){
         Select combo = new Select(campoTreinamentoPage.getComboEsportes());
-        for (String s: listaEsportes) {
+        for (String s: esportes) {
             combo.selectByVisibleText(s);
         }
         return combo.getAllSelectedOptions().size();
     }
 
-    public int deselecionaEsportes(List<String> listaEsportes){
+    public int deselecionaEsportes(String... esportes){
         Select combo = new Select(campoTreinamentoPage.getComboEsportes());
-        for (String s: listaEsportes) {
+        for (String s: esportes) {
             combo.deselectByVisibleText(s);
         }
         return combo.getAllSelectedOptions().size();
@@ -142,7 +143,6 @@ public class CampoTreinamentoAction {
     }
 
     public void cadastrarPessoaComSucesso(Pessoa pessoa){
-
         preencheTextFieldNome(pessoa.getNome());
         preencheTextFieldSobrenome(pessoa.getSobrenome());
         selecionaRadioButton(pessoa.getGenero());
@@ -150,7 +150,10 @@ public class CampoTreinamentoAction {
             selecionaCheckComida(comida);
         }
         selecionarEscolaridadeDropDown(pessoa.getEscolaridade());
-        selecionaEsportes(pessoa.getEsportesQuePratica());
+
+        for (int i = 0; i <pessoa.getEsportesQuePratica().size() ; i++) {
+            selecionaEsportes(pessoa.getEsportesQuePratica().get(i));
+        }
 
         campoTreinamentoPage.getBtnCadastrar().click();
     }
@@ -165,6 +168,9 @@ public class CampoTreinamentoAction {
         return campoTreinamentoPage.getDriver().findElement(By.id(id)).isDisplayed();
     }
 
+    public boolean verificaSeElementoEstaSelecionado(WebElement elemento){
+        return elemento.isDisplayed();
+    }
     public String pegaTextoElementoPorId(String id){
         return campoTreinamentoPage.getDriver().findElement(By.id(id)).getText();
     }
