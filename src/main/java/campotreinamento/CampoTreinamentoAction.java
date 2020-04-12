@@ -1,9 +1,6 @@
 package campotreinamento;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import util.Pessoa;
 
@@ -194,5 +191,10 @@ public class CampoTreinamentoAction {
 
     public String pegaTextoDeTagPorId(String id, String tagName){
         return campoTreinamentoPage.getDriver().findElement(By.id(id)).findElement(By.tagName(tagName)).getText();
+    }
+
+    public Object executaComandoJavaScript(String cmd, Object... parametros){
+        JavascriptExecutor executor = (JavascriptExecutor) campoTreinamentoPage.getDriver();
+        return executor.executeScript(cmd,parametros);
     }
 }

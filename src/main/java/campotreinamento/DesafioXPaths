@@ -1,0 +1,11 @@
+1) //input[@id='elementosForm:nome']
+2) //input[@type='radio' and @value='F']
+3) //input[@id='elementosForm:comidaFavorita:2' and @value='pizza']
+    -- para clicar na label a partir da table: //table[@id='elementosForm:comidaFavorita']//td[3]/label
+   -- voltando um nível: //input[@id='elementosForm:comidaFavorita:2' and @value='pizza']/../label
+4) //table[@id='tabelaSemJSF']//tr[3]/td[1]
+    -- forma do professor: .//*[@id='tabelaSemJSF']//td[.='Usuario B']
+5) //table[@id='elementosForm:tableUsuarios']//tr[2]/td[3]/input[@type='button']
+    -- forma do professor: .//*[@id='elementosForm:tableUsuarios']//td[.='Maria']/..//input[@type='button']
+6) //table[@id='elementosForm:tableUsuarios']//tr[4]//input[@type='radio']
+7) //table[@id='elementosForm:tableUsuarios']//tr[5]//input[@type='text']
